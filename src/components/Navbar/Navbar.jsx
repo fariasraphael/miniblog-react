@@ -56,6 +56,11 @@ const Navbar = () => {
             Sobre
           </NavLink>
         </li>
+        {user && (
+          <li>
+            <button>Sair</button>
+          </li>
+        )}
       </ul>
     </nav>
   );
