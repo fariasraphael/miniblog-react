@@ -70,6 +70,33 @@ export const useAuthantication = () => {
     signOut(auth);
   };
 
+  // login- sign in
+  const login = async (data) => {
+    checkIfIsCancelled();
+
+    setLoading(true);
+    setError(false);
+
+    try {
+      await signInWithEmailAndPassword(auth, data.email, data.password);
+      setLoading(false);
+    } catch (error) {
+      let systemErrorMEssage;
+
+      if (error.message.includes("auth/invalid-credential")) {
+        systemErrorMEssage = "Usuário ou senha incorreto.";
+      } else if (error.message.includes("auth/invalid-email")) {
+        systemErrorMEssage = "Digite um e-mail cadastrado.";
+      } else if (error.message.includes("auth/missing-password")) {
+        systemErrorMEssage = "Digite sua senha.";
+      } else {
+        systemErrorMEssage = "ocorreu um erro, por favor tente mais tarde.";
+      }
+      setError(systemErrorMEssage);
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     return () => setCancelled(true);
   }, []);
@@ -80,5 +107,6 @@ export const useAuthantication = () => {
     error,
     loading,
     logout,
+    login,
   };
 };
